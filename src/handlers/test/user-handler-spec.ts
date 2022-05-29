@@ -2,6 +2,7 @@ import supertest from "supertest";
 import database from "../../database";
 import app from "../../server";
 import { User, UserStore } from "../../models/user-model";
+import { UserHelper } from "../../helpers/user-helper";
 
 const request = supertest(app);
 
@@ -36,8 +37,6 @@ describe("Test users endpoints", () => {
       .set("Content-Type", "application/json")
       .send(user)
       .expect(200);
-
-    userId = response.body.id;
   });
 
   it("test get user token", async () => {
@@ -64,6 +63,7 @@ describe("Test users endpoints", () => {
       .set("Content-Type", "application/json")
       .send()
       .expect(200);
+    userId = (<User[]>response.body)[0].id;
   });
 
   it("test get item", async () => {

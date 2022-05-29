@@ -8,6 +8,12 @@ export type Order = {
   status: boolean;
 };
 
+export type OrderProduct = {
+  order_id: number;
+  product_id: number;
+  quantity: number;
+};
+
 export class OrderStore {
   async index(): Promise<Order[]> {
     try {
@@ -61,6 +67,29 @@ export class OrderStore {
       return order;
     } catch (err) {
       throw new Error(`Could not add new order. Error: ${err}`);
+    }
+  }
+
+  async addProduct(x: OrderProduct): Promise<Order> {
+    try {
+      const sql =
+        "INSERT INTO order_products (order_id, product_id, quantity) VALUES($1, $2, $3) RETURNING *";
+
+      const conn = await database.connect();
+
+      const result = await conn.query(sql, [
+        x.order_id,
+        x.product_id,
+        x.quantity,
+      ]);
+
+      const order = result.rows[0];
+
+      conn.release();
+
+      return order;
+    } catch (err) {
+      throw new Error(`Could not add order product. Error: ${err}`);
     }
   }
 }

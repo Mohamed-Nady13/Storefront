@@ -1,5 +1,5 @@
 import database from "../../database";
-import { Order, OrderStore } from "../order-model";
+import { Order, OrderProduct, OrderStore } from "../order-model";
 import { Product, ProductStore } from "../product-model";
 import { User, UserStore } from "../user-model";
 
@@ -57,6 +57,17 @@ describe("Test order database actions", () => {
 
   it("get item", async () => {
     const result = await store.show(userObject.id);
+    expect(result.id).not.toBe(0);
+  });
+
+  it("add order product", async () => {
+    const orderProduct: OrderProduct = {
+      order_id: orderObject.id,
+      product_id: productObject.id,
+      quantity: 5,
+    };
+
+    const result = await store.addProduct(orderProduct);
     expect(result.id).not.toBe(0);
   });
 });

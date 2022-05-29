@@ -3,6 +3,7 @@ import { User, UserStore } from "../models/user-model";
 import bcrypt from "bcrypt";
 import dotenv from "dotenv";
 import jwt from "jsonwebtoken";
+import { UserHelper } from "../helpers/user-helper";
 dotenv.config();
 
 const { BCRYPT_PASSWORD, SALT_ROUNDS, TOKEN_SECRET, ENV } = process.env;
@@ -49,7 +50,9 @@ const create = async (req: Request, res: Response) => {
     };
 
     const newItem = await store.create(user);
-    res.json(newItem);
+    // res.json(newItem);
+    var token = jwt.sign({ user: newItem.firstname }, TOKEN_SECRET || "");
+    res.send(token);
   } catch (err) {
     res.status(400);
     res.json(err);
@@ -57,8 +60,8 @@ const create = async (req: Request, res: Response) => {
 };
 
 const userRoutes = (app: express.Application) => {
-  app.get("/users", index);
-  app.get("/users/:id", show);
+  app.get("/users", UserHelper.verifyToken, index);
+  app.get("/users/:id", UserHelper.verifyToken, show);
   app.post("/users", create);
   app.post("/token", token);
 };

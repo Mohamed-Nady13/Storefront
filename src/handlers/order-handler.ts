@@ -1,5 +1,6 @@
 import express, { Request, Response } from "express";
-import { Order, OrderStore } from "../models/order-model";
+import { UserHelper } from "../helpers/user-helper";
+import { Order, OrderProduct, OrderStore } from "../models/order-model";
 
 const store = new OrderStore();
 
@@ -31,10 +32,27 @@ const create = async (req: Request, res: Response) => {
   }
 };
 
+const addProduct = async (req: Request, res: Response) => {
+  try {
+    const orderProduct: OrderProduct = {
+      order_id: req.body.order_id,
+      product_id: req.body.product_id,
+      quantity: req.body.quantity,
+    };
+
+    const newItem = await store.addProduct(orderProduct);
+    res.json(newItem);
+  } catch (err) {
+    res.status(400);
+    res.json(err);
+  }
+};
+
 const ordertRoutes = (app: express.Application) => {
-  app.get("/orders", index);
-  app.get("/orders/:id", show);
-  app.post("/orders", create);
+  app.get("/orders", UserHelper.verifyToken, index);
+  app.get("/orders/:id", UserHelper.verifyToken, show);
+  app.post("/orders", UserHelper.verifyToken, create);
+  app.post("/orders/products", UserHelper.verifyToken, addProduct);
 };
 
 export default ordertRoutes;

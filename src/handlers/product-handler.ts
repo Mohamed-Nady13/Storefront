@@ -1,4 +1,5 @@
 import express, { Request, Response } from "express";
+import { UserHelper } from "../helpers/user-helper";
 import { Product, ProductStore } from "../models/product-model";
 
 const store = new ProductStore();
@@ -33,7 +34,7 @@ const create = async (req: Request, res: Response) => {
 const productRoutes = (app: express.Application) => {
   app.get("/products", index);
   app.get("/products/:id", show);
-  app.post("/products", create);
+  app.post("/products", UserHelper.verifyToken, create);
 };
 
 export default productRoutes;

@@ -1,7 +1,7 @@
 import supertest from "supertest";
 import database from "../../database";
 import app from "../../server";
-import { Order } from "../../models/order-model";
+import { Order, OrderProduct } from "../../models/order-model";
 import { Product, ProductStore } from "../../models/product-model";
 import { User, UserStore } from "../../models/user-model";
 
@@ -97,6 +97,22 @@ describe("Test orders endpoints", function () {
       .set("Accept", "application/json")
       .set("Authorization", "Bearer " + token)
       .send()
+      .expect(200);
+  });
+
+  it("test add order product", async () => {
+    const orderProduct: OrderProduct = {
+      order_id: orderObject.id,
+      product_id: productObject.id,
+      quantity: 5,
+    };
+
+    const response = await request
+      .post("/orders/products")
+      .set("Accept", "application/json")
+      .set("Authorization", "Beareer " + token)
+      .set("Content-Type", "application/json")
+      .send(orderProduct)
       .expect(200);
   });
 });
