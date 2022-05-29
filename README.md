@@ -19,7 +19,7 @@ To get started developing right away:
   * Create dev database with name `Storefront`
   * Create test database with name `Storefront_test`
   * Run the database migrations using the following command `node node_modules/db-migrate/bin/db-migrate up`
-* Create `.env` file. Sample configurtion as follows:
+* Create `.env` file. Sample configuration as follows:
   
 ```bash
 POSTGRES_HOST = localhost
