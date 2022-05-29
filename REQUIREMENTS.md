@@ -5,19 +5,19 @@ These are the notes from a meeting with the frontend developer that describe wha
 
 ## API Endpoints
 #### Products
-- Index 
-- Show
-- Create [token required]
+- Index `(/products)(GET)`
+- Show `(/products/:id)(GET)`
+- Create [token required] `(/products)(POST)`
 - [OPTIONAL] Top 5 most popular products 
 - [OPTIONAL] Products by category (args: product category)
 
 #### Users
-- Index [token required]
-- Show [token required]
-- Create N[token required]
+- Index [token required] `(/users)(GET)`
+- Show [token required] `(/users/:id)(GET)`
+- Create N[token required] `(/users)(POST)`
 
 #### Orders
-- Current Order by user (args: user id)[token required]
+- Current Order by user (args: user id)[token required] `(/orders/:id)(GET)`
 - [OPTIONAL] Completed Orders by user (args: user id)[token required]
 
 ## Data Shapes
@@ -40,3 +40,40 @@ These are the notes from a meeting with the frontend developer that describe wha
 - user_id
 - status of order (active or complete)
 
+## Tables Schema
+### Products
+```bash
+CREATE TABLE public.products
+(
+    id serial,
+    name character varying(50) NOT NULL,
+    price integer NOT NULL,
+    category character varying(50),
+    CONSTRAINT product_pkey PRIMARY KEY (id)
+);
+```
+
+### Users
+```bash
+CREATE TABLE public.users
+(
+    id serial,
+    firstname character varying(50),
+    lastname character varying(50),
+    password character varying(500),
+    CONSTRAINT users_pkey PRIMARY KEY (id)
+);
+```
+
+### Orders
+```bash
+CREATE TABLE public.orders
+(
+    id serial,
+    product_id integer NOT NULL,
+    user_id integer NOT NULL,
+    quantity integer NOT NULL,
+    status bit(1) NOT NULL,
+    CONSTRAINT orders_pkey PRIMARY KEY (id)
+);
+```

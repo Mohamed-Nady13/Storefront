@@ -14,9 +14,11 @@ The project provides an API for a shopping website.
 To get started developing right away:
 
 * Install all project dependencies with `npm install`
-* Start the development server with `npm start`
-* Create dev database `Storefront`
-* Create test database `Storefront_test`
+* Database
+  * Instal PostgreeSQL with port number: `5432`
+  * Create dev database with name `Storefront`
+  * Create test database with name `Storefront_test`
+  * Run the database migrations using the following command `node node_modules/db-migrate/bin/db-migrate up`
 * Create `.env` file. Sample configurtion as follows:
   
 ```bash
@@ -29,8 +31,9 @@ ENV=dev
 BCRYPT_PASSWORD=your-secret-password
 SALT_ROUNDS=10
 TOKEN_SECRET = mnb12212
-
 ```
+* Start the development server with `npm start` (server port number is `3000`)
+* 
 ## Packages
 
 * express 
