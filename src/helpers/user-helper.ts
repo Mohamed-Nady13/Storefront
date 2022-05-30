@@ -1,6 +1,5 @@
 import { Request, Response, NextFunction } from "express";
 import Jwt from "jsonwebtoken";
-import { User } from "../models/user-model";
 
 export class UserHelper {
   static verifyToken(request: Request, response: Response, next: NextFunction) {
@@ -12,13 +11,13 @@ export class UserHelper {
     }
   }
 
-  static getUser(request: Request): User {
+  static getUser(request: Request): string {
     const authorizationHeader = request.headers.authorization || "";
 
     const token = authorizationHeader.split(" ")[1];
 
     const jwtRes = Jwt.verify(token, process.env.TOKEN_SECRET || "");
 
-    return (<any>jwtRes).user;
+    return jwtRes instanceof String ? jwtRes : (<Jwt.JwtPayload>jwtRes).user;
   }
 }

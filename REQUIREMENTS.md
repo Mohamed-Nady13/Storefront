@@ -78,3 +78,13 @@ CREATE TABLE public.orders
     CONSTRAINT orders_pkey PRIMARY KEY (id)
 );
 ```
+
+### order_products
+```bash
+CREATE TABLE public.order_products
+(
+    order_id integer NOT NULL,
+    product_id integer NOT NULL,
+    quantity integer
+)
+```

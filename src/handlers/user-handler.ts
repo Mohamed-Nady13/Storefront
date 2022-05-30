@@ -11,13 +11,23 @@ const { BCRYPT_PASSWORD, SALT_ROUNDS, TOKEN_SECRET, ENV } = process.env;
 const store = new UserStore();
 
 const index = async (_req: Request, res: Response) => {
-  const users = await store.index();
-  res.json(users);
+  try {
+    const users = await store.index();
+    res.json(users);
+  } catch (err) {
+    res.status(400);
+    res.json(err);
+  }
 };
 
 const show = async (req: Request, res: Response) => {
-  const user = await store.show(parseInt(req.params.id));
-  res.json(user);
+  try {
+    const user = await store.show(parseInt(req.params.id));
+    res.json(user);
+  } catch (err) {
+    res.status(400);
+    res.json(err);
+  }
 };
 
 const token = async (req: Request, res: Response) => {
